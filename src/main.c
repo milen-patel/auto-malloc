@@ -16,6 +16,7 @@ int main() {
 	printf("Value: %c\n", *char_pointer);
 	char *char_pointer_2 = new_char('p');
 	printf("Value: %c\n", *char_pointer_2);
+	am_status();
 
 
 	am_close();

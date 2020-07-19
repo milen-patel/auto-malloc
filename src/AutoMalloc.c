@@ -62,7 +62,29 @@ void am_status() {
 		return;
 	}
 
-	printf("Running\n");
+	printf("Running");
+
+	/* If we have more than one active item, print a table to the screen */
+	if (Vec_length(&objects) > 0) {
+		/* Print table starter and header */
+		printf("\n#####################\n");
+		printf("# Address   | # Bytes \n");
+
+		/* Iterate over all of the active items */
+		for (int i = 0; i < Vec_length(&objects); i++) {
+			/* Get the curent Vec item */
+			MemoryItem *current = (MemoryItem *) Vec_ref(&objects, i);
+
+			/* Add entry to the table */
+			printf("# %p | %lu \n", current->memVal, current->numBytes);
+		}
+		
+		/* Print ending line to table */
+		printf("#####################\n");
+	} else {
+		/* If we dont have any active items, inform the user */
+		printf(". No active variables\n");
+	}
 }
 
 void *new_general(size_t byteCount) {
