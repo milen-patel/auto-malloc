@@ -1,6 +1,10 @@
 #ifndef AUTOMALLOC_H
 #define AUTOMALLOC_H
 #include <stdio.h>
+#include "AutoMalloc_String.h"
+
+//TODO: Move and add documentation
+
 
 /* Used internally to keep track of user-allocated variables */
 typedef enum VariableType {
