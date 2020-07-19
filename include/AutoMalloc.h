@@ -3,9 +3,15 @@
 #include <stdio.h>
 
 /* Used internally to keep track of user-allocated variables */
+typedef enum VariableType {
+	STANDARD = 0,
+	STRING = 1,
+} VariableType;
+
 typedef struct MemoryItem {
 	size_t numBytes;
 	void *memVal;
+	VariableType type;
 } MemoryItem;
 
 /* Starts AutoMalloc, must be called before any of the 'new' variable functions

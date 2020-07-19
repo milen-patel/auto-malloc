@@ -36,16 +36,18 @@ void am_close() {
 		/* Get the curent Array item */
 		MemoryItem *current = (MemoryItem *) Array_ref(&objects, i);
 
-		if (sizeof(int) == sizeof(current->numBytes)) {
-			free((int *) current->memVal);
-		} else if (sizeof(char) == sizeof(current->numBytes)) {
-			free((char *) current->memVal);
-		} else if (sizeof(short) == sizeof(current->numBytes)) {
-			free((short *) current->memVal);
-		} else if (sizeof(long) == sizeof(current->numBytes)) {
-			free((long *) current->memVal);
-		} else if (sizeof(unsigned int) == sizeof(current->numBytes)) {
-			free((unsigned int *) current->memVal);
+		if (current->type == STANDARD) {
+			if (sizeof(int) == sizeof(current->numBytes)) {
+				free((int *) current->memVal);
+			} else if (sizeof(char) == sizeof(current->numBytes)) {
+				free((char *) current->memVal);
+			} else if (sizeof(short) == sizeof(current->numBytes)) {
+				free((short *) current->memVal);
+			} else if (sizeof(long) == sizeof(current->numBytes)) {
+				free((long *) current->memVal);
+			} else if (sizeof(unsigned int) == sizeof(current->numBytes)) {
+				free((unsigned int *) current->memVal);
+			}
 		}
 	}
 
@@ -100,7 +102,8 @@ void *new_general(size_t byteCount) {
 	/* Request Heap Memory for MemoryItem */
 	MemoryItem stor = {
 		byteCount,
-		ptr
+		ptr,
+		STANDARD
 	};
 
 	/* Add the value to internal list */
