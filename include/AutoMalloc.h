@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include "AutoMalloc_String.h"
 
-//TODO: Move and add documentation
-AutoMalloc_String *new_string(int width);
 
 
 /* Used internally to keep track of user-allocated variables */
@@ -47,6 +45,17 @@ void am_close();
  * about all of the variables that AutoMalloc is currently tracking
  */
 void am_status();
+
+/* Creates a new AutoMalloc_String in heap memory. am_start() must have been called
+ * in the program prior to calling this function.
+ *
+ * AutoMalloc provides a custom implementation for Strings. Full documentation may
+ * be viewed in AutoMalloc_String.h. AutoMalloc_Strings are dynamic in size and have
+ * helper functions that make them preferrable to character arrays.
+ *
+ * width -> The initial number of characters to be stored in the string
+ */
+AutoMalloc_String *new_string(int width);
 
 /* Creates a new char in heap memory. am_start() must have been called
  * in the program prior to calling this function.

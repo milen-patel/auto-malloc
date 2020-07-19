@@ -98,7 +98,6 @@ void am_status() {
 	}
 }
 
-//TODO Make this use new_general
 AutoMalloc_String *new_string(int width) {
 	/* Make sure that we are already running */
 	if (!isRunning) {
