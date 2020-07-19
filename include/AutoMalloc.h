@@ -4,6 +4,7 @@
 #include "AutoMalloc_String.h"
 
 //TODO: Move and add documentation
+AutoMalloc_String *new_string(int width);
 
 
 /* Used internally to keep track of user-allocated variables */

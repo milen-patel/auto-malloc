@@ -16,6 +16,12 @@ int main() {
 	printf("Value: %c\n", *char_pointer);
 	char *char_pointer_2 = new_char('p');
 	printf("Value: %c\n", *char_pointer_2);
+
+	AutoMalloc_String *strPtr;
+	strPtr = new_string(2);
+	AutoMalloc_String_append(strPtr, "This is a sample string!");
+	printf("%s\n", AutoMalloc_String_cstr(strPtr));
+
 	am_status();
 
 

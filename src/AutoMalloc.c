@@ -48,6 +48,15 @@ void am_close() {
 			} else if (sizeof(unsigned int) == sizeof(current->numBytes)) {
 				free((unsigned int *) current->memVal);
 			}
+		} else if (current->type == STRING) {
+			/* If we have a string then memVal is a pointer to an AutoMalloc_String */
+			AutoMalloc_String *strAddy = (AutoMalloc_String *) current->memVal;
+
+			/* First, free the string itself */
+			AutoMalloc_String_drop(strAddy);
+
+			/* Then free the heap memory that we used to store the string struct */
+			free(strAddy);
 		}
 	}
 
@@ -87,6 +96,41 @@ void am_status() {
 		/* If we dont have any active items, inform the user */
 		printf(". No active variables\n");
 	}
+}
+
+//TODO Make this use new_general
+AutoMalloc_String *new_string(int width) {
+	/* Make sure that we are already running */
+	if (!isRunning) {
+		printf("ERROR: Cannot request memory without calling am_start()!\n");
+		return NULL;
+	}
+
+	/* Validate input */
+	if (width < 0) {
+		printf("ERROR: Cannot create a string of negative length!\n");
+		return NULL;
+	}
+
+	/* Request heap memory */
+	void *ptr = malloc(sizeof(AutoMalloc_String));
+
+	/* Create representation for  MemoryItem */
+	MemoryItem stor = {
+		sizeof(AutoMalloc_String),
+		ptr,
+		STRING
+	};
+
+	/* Make the ptr point to a valid AutoMalloc_String */
+	AutoMalloc_String *strPtr = (AutoMalloc_String *) ptr;
+	*strPtr = AutoMalloc_String_value(width);
+
+	/* Add the value to internal list */
+	Array_set(&objects, Array_length(&objects), &stor);
+
+	/* Return the value to the user */
+	return strPtr;
 }
 
 void *new_general(size_t byteCount) {
