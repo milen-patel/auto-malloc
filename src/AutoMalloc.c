@@ -33,6 +33,7 @@ void am_close() {
 		/* Get the curent Array item */
 		MemoryItem *current = (MemoryItem *) Array_ref(&objects, i);
 
+		/* If we are looking at a standard data type */
 		if (current->type == STANDARD) {
 			if (sizeof(int) == sizeof(current->numBytes)) {
 				free((int *) current->memVal);
