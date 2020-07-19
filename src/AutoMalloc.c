@@ -31,30 +31,25 @@ void am_close() {
 		return;
 	}
 
-	/* Experimental */
-	//MemoryItem *current = (MemoryItem *) Vec_ref(&objects, 0);
-	//printf("Addy: %p\n", current);
-	//printf("Val: %d\n", *((int *) current->memVal));
-	//free(((int *) current->memVal));
-	
 	/* Iterate over each item in objects */
 	for (int i = 0; i < Vec_length(&objects); i++) {
 		/* Get the curent Vec item */
 		MemoryItem *current = (MemoryItem *) Vec_ref(&objects, i);
 
-		printf("numBytes: %lu\n", current->numBytes);
-		printf("val: %d\n", *((int *) current->memVal));
-
-		free((int *) current->memVal);
-		//for (size_t j = 0; j < current->numBytes; j++) {
-		//	char *currentByte = ((char *) current->memVal) + j;
-		//	printf("J=%lu, PTR=%p \n", j, currentByte);
-		//	free(currentByte);
-		//}
-
+		if (sizeof(int) == sizeof(current->numBytes)) {
+			free((int *) current->memVal);
+		} else if (sizeof(char) == sizeof(current->numBytes)) {
+			free((char *) current->memVal);
+		} else if (sizeof(short) == sizeof(current->numBytes)) {
+			free((short *) current->memVal);
+		} else if (sizeof(long) == sizeof(current->numBytes)) {
+			free((long *) current->memVal);
+		} else if (sizeof(unsigned int) == sizeof(current->numBytes)) {
+			free((unsigned int *) current->memVal);
+		}
 	}
 
-	/* Free all of our heap memory TODO */
+	/* Free the actual Vec itself */
 	Vec_drop(&objects);
 
 	/* Inform the user */
@@ -70,7 +65,7 @@ void am_status() {
 	printf("Running\n");
 }
 
-int* new_int() {
+void *new_general(size_t byteCount) {
 	/* Make sure that we are already running */
 	if (!isRunning) {
 		printf("ERROR: Cannot request memory without calling am_start()!\n");
@@ -78,20 +73,33 @@ int* new_int() {
 	}
 
 	/* Request heap memory */
-	int *ptr = (int *) malloc(sizeof(int));
+	void *ptr = malloc(byteCount);
 
 	/* Request Heap Memory for MemoryItem */
 	MemoryItem stor = {
-	sizeof(int),
-	ptr
+		byteCount,
+		ptr
 	};
-	
-
-	/* Set value to 0 */
-	*ptr = 0;
 
 	/* Add the value to internal list */
 	Vec_set(&objects, Vec_length(&objects), &stor);
+
+	/* Return the value to the user */
+	return ptr;
+}
+
+int* new_int() {
+	/* Call general memory allocation function */
+	int *ptr = (int *) new_general(sizeof(int));
+
+	/* Check if value is NULL */
+	if (ptr == NULL) {
+		printf("Failed to create new integer\n");
+		return NULL;
+	}
+
+	/* Set value to 0 */
+	*ptr = 0;
 
 	/* Return the value to the user */
 	return ptr;
