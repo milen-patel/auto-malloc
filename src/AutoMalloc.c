@@ -19,9 +19,6 @@ void am_start() {
 
 	/* Create memory on the heap to store our lookup table */
 	objects = Array_value(1, sizeof(MemoryItem));
-	
-	/* Inform the user */
-	printf("Started\n");
 }
 
 void am_close() {
