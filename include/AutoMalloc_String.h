@@ -4,6 +4,12 @@
 #include "Internal_Array.h"
 
 /**
+ * AutoMalloc_String is just an alias of Array to make its purpose of storing
+ * char data and the following functions clear.
+ */
+typedef Array AutoMalloc_String;
+
+/**
  * Returns the length of the AutoMalloc_String _not_ including the null terminating
  * character.
  */
@@ -52,12 +58,6 @@ char AutoMalloc_String_get(const AutoMalloc_String *self, size_t index);
  * end of the AutoMalloc_String and terminate with a null character.
  */
 void AutoMalloc_String_set(AutoMalloc_String *self, size_t index, const char value);
-
-/**
- * AutoMalloc_String is just an alias of Array to make its purpose of storing
- * char data and the following functions clear.
- */
-typedef Array AutoMalloc_String;
 
 /**
  * Construct an empty AutoMalloc_String value. Owner is responsible for calling
