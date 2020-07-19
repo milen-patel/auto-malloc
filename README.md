@@ -33,13 +33,13 @@ Using any of the creation functions will give you a pointer to a specified varia
 
 The following functions create new variables of the specified type and return pointers to them. You are free to dereferene and modify the underlying values represented by the pointer. Full documentation for all of the following functions is specified in AutoMalloc.h
 
-**`char *new_char(char startingValue)`**
-**`unsigned char *new_unsigned_char(unsigned char startingValue)`**
-**`signed char *new_signed_char(signed char startingValue)`**
-**`int *new_int(int startingValue)`**
-**`unsigned int *new_unsigned_int(unsigned int startingValue)`**
-**`short *new_short(short startingValue)`**
-**`unsigned short *new_unsigned_short(unsigned short startingValue)`**
-**`long *new_long(long startingValue)`**
-**`unsigned long *new_unsigned_long(unsigned long startingValue)`**
+**`char *new_char(char startingValue)`**\
+**`unsigned char *new_unsigned_char(unsigned char startingValue)`**\
+**`signed char *new_signed_char(signed char startingValue)`**\
+**`int *new_int(int startingValue)`**\
+**`unsigned int *new_unsigned_int(unsigned int startingValue)`**\
+**`short *new_short(short startingValue)`**\
+**`unsigned short *new_unsigned_short(unsigned short startingValue)`**\
+**`long *new_long(long startingValue)`**\
+**`unsigned long *new_unsigned_long(unsigned long startingValue)`**\
 
