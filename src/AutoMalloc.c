@@ -1,11 +1,11 @@
 #include "AutoMalloc.h"
-#include "Vec.h"
+#include "Internal_Array.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
 static bool isRunning = false;
-static Vec objects;
+static Array objects;
 
 void am_start() {
 	/* Check to see if the function has already been called */
@@ -18,7 +18,7 @@ void am_start() {
 	isRunning = true;
 
 	/* Create memory on the heap to store our lookup table */
-	objects = Vec_value(1, sizeof(MemoryItem));
+	objects = Array_value(1, sizeof(MemoryItem));
 	
 	/* Inform the user */
 	printf("Started\n");
@@ -32,9 +32,9 @@ void am_close() {
 	}
 
 	/* Iterate over each item in objects */
-	for (int i = 0; i < Vec_length(&objects); i++) {
-		/* Get the curent Vec item */
-		MemoryItem *current = (MemoryItem *) Vec_ref(&objects, i);
+	for (int i = 0; i < Array_length(&objects); i++) {
+		/* Get the curent Array item */
+		MemoryItem *current = (MemoryItem *) Array_ref(&objects, i);
 
 		if (sizeof(int) == sizeof(current->numBytes)) {
 			free((int *) current->memVal);
@@ -49,8 +49,8 @@ void am_close() {
 		}
 	}
 
-	/* Free the actual Vec itself */
-	Vec_drop(&objects);
+	/* Free the actual Array itself */
+	Array_drop(&objects);
 
 	/* Inform the user */
 	printf("Closed\n");
@@ -65,15 +65,15 @@ void am_status() {
 	printf("Running");
 
 	/* If we have more than one active item, print a table to the screen */
-	if (Vec_length(&objects) > 0) {
+	if (Array_length(&objects) > 0) {
 		/* Print table starter and header */
 		printf("\n#####################\n");
 		printf("# Address   | # Bytes \n");
 
 		/* Iterate over all of the active items */
-		for (int i = 0; i < Vec_length(&objects); i++) {
-			/* Get the curent Vec item */
-			MemoryItem *current = (MemoryItem *) Vec_ref(&objects, i);
+		for (int i = 0; i < Array_length(&objects); i++) {
+			/* Get the curent Array item */
+			MemoryItem *current = (MemoryItem *) Array_ref(&objects, i);
 
 			/* Add entry to the table */
 			printf("# %p | %lu \n", current->memVal, current->numBytes);
@@ -104,7 +104,7 @@ void *new_general(size_t byteCount) {
 	};
 
 	/* Add the value to internal list */
-	Vec_set(&objects, Vec_length(&objects), &stor);
+	Array_set(&objects, Array_length(&objects), &stor);
 
 	/* Return the value to the user */
 	return ptr;

@@ -3,20 +3,20 @@
 #include <stdio.h>
 
 #include "Guards.h"
-#include "Vec.h"
+#include "Internal_Array.h"
 
 /* Helper function which takes a pointer to a vec and ensures that the
- * Vec has enough heap storage to hold n elements of its 
+ * Array has enough heap storage to hold n elements of its 
  * size */
-static void _ensure_capacity(Vec *self, size_t n);
+static void _ensure_capacity(Array *self, size_t n);
 
 /* Helper function that will terminate the program with an appropriate
  * error message, given a line reference to the error */
 static void exitOnError(unsigned line);
 
-Vec Vec_value(size_t capacity, size_t item_size)
+Array Array_value(size_t capacity, size_t item_size)
 {
-    Vec vec = {
+    Array vec = {
         item_size,
         0,
         capacity,
@@ -26,7 +26,7 @@ Vec Vec_value(size_t capacity, size_t item_size)
     return vec;
 }
 
-void Vec_drop(Vec *self)
+void Array_drop(Array *self)
 {
     free(self->buffer);
     self->buffer = NULL;
@@ -34,12 +34,12 @@ void Vec_drop(Vec *self)
     self->length = 0;
 }
 
-size_t Vec_length(const Vec *self)
+size_t Array_length(const Array *self)
 {
     return self->length;
 }
 
-void* Vec_ref(const Vec *self, size_t index)
+void* Array_ref(const Array *self, size_t index)
 {
     if (index < self->length) {
         return self->buffer + (index * self->item_size);
@@ -50,7 +50,7 @@ void* Vec_ref(const Vec *self, size_t index)
 }
 
 
-void Vec_get(const Vec *self, size_t index, void *out) {
+void Array_get(const Array *self, size_t index, void *out) {
     if (index < self->length) {
 		/* Get the address of the specified item */
 		char *firstPosLoc = (char*)(self->buffer) + self->item_size*index;
@@ -62,15 +62,15 @@ void Vec_get(const Vec *self, size_t index, void *out) {
     }
 }
 
-void Vec_set(Vec *self, size_t index, const void *value) {
+void Array_set(Array *self, size_t index, const void *value) {
     if (index == self->length) {
-       Vec_splice(self,index, 0, value, 1);
+       Array_splice(self,index, 0, value, 1);
     } else {
-       Vec_splice(self,index, 1, value, 1);
+       Array_splice(self,index, 1, value, 1);
     }
 }
 
-bool Vec_equals(const Vec *self, const Vec *other) {
+bool Array_equals(const Array *self, const Array *other) {
     if (self->length != other->length) {
         return false;
     }
@@ -88,7 +88,7 @@ bool Vec_equals(const Vec *self, const Vec *other) {
     return true;
 }
 
-void Vec_splice(Vec *self, size_t index, size_t delete_count, const void *items, size_t insert_count) {
+void Array_splice(Array *self, size_t index, size_t delete_count, const void *items, size_t insert_count) {
     /* Test to make sure the combo of insertions and deletions is valid */
     if ((index+delete_count) > self->length) {
         exitOnError(__LINE__);
@@ -135,7 +135,7 @@ void Vec_splice(Vec *self, size_t index, size_t delete_count, const void *items,
     }
 }
 
-static void _ensure_capacity(Vec *self, size_t n) 
+static void _ensure_capacity(Array *self, size_t n) 
 {
 	/* Check if reallocation is needed */
     if (n > self->capacity) {

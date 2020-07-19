@@ -1,5 +1,5 @@
-all : main.o AutoMalloc.o Vec.o Guards.o
-	gcc build/main.o build/AutoMalloc.o build/Vec.o build/Guards.o -o main -lm
+all : main.o AutoMalloc.o Internal_Array.o Guards.o
+	gcc build/main.o build/AutoMalloc.o build/Internal_Array.o build/Guards.o -o main -lm
 	mv main ./build
 
 main.o : src/main.c directories
@@ -10,9 +10,9 @@ AutoMalloc.o : src/AutoMalloc.c directories
 	gcc -c -I include/ src/AutoMalloc.c
 	mv AutoMalloc.o ./build/
 
-Vec.o : src/Vec.c directories
-	gcc -c -I include/ src/Vec.c
-	mv Vec.o ./build/
+Internal_Array.o : src/Internal_Array.c directories
+	gcc -c -I include/ src/Internal_Array.c
+	mv Internal_Array.o ./build/
 
 Guards.o : src/Guards.c directories
 	gcc -c -I include/ src/Guards.c
